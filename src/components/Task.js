@@ -10,25 +10,28 @@ export default props => {
 
 	const doneOrNotStyle = props.doneAt != null 
 	? { textDecorationLine: 'line-through'} : {}
-	
-	
+
+
 	const date = props.doneAt ? props.doneAt: props.estimatedAt
-	
+
 	const formatedDate = moment(date).locale('pt-br').format('ddd, D [de] MMMM')
 
 	return (
 		<TouchableHighlight
 			onPress={ () => props.toggleTask(props.id) }>
 			<View style={styles.container}>
-				
+
 
 					<View style={styles.checkContainer}>
 						{getCheckView(props.doneAt)}
 					</View>
-				
+
 					<View>
 						<Text style={ [ styles.task, doneOrNotStyle ] }>{props.desc}</Text>
-						<Text style={ styles.date }>{formatedDate}</Text>
+						<Text style={ styles.date }>
+							{props.doneAt ? 'Feito em ': ''}
+							{formatedDate}
+						</Text>
 					</View>
 			</View>
 		</TouchableHighlight>
@@ -52,6 +55,7 @@ function getCheckView(doneAt) {
 
 
 import commonStyles from '../commonStyles'
+commonStyles.loadFont()
 
 const styles = StyleSheet.create({
 	container: {
@@ -78,12 +82,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	task: {
-		fontFamily: 'Lato',
+		fontFamily: commonStyles.fontFamily,
 		color: commonStyles.colors.mainText,
 		fontSize: 16
 	},
 	date: {
-		fontFamily: 'Lato',
+		fontFamily: commonStyles.fontFamily,
 		color: commonStyles.colors.subText,
 		fontSize: 13
 	}
