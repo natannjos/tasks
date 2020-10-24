@@ -23,7 +23,8 @@
     "react-native-screens": "2.10.1",
     "react-navigation": "4.0.10",
     "react-navigation-drawer": "2.3.3",
-    "expo-font": "~8.3.0"
+    "expo-font": "~8.3.0",
+    "react-native-gesture-handler": "~1.7.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

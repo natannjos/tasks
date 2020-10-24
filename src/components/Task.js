@@ -1,7 +1,8 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
+import { View, Text, StyleSheet, TouchableWithoutFeedback, Animated, TouchableOpacity } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 
+import { Swipeable } from 'react-native-gesture-handler'
 
 import moment from 'moment'
 import 'moment/locale/pt-br'
@@ -16,25 +17,42 @@ export default props => {
 
 	const formatedDate = moment(date).locale('pt-br').format('ddd, D [de] MMMM')
 
+	const showRightContent = () => {
+		return (
+				<TouchableOpacity>
+					<View style={styles.rightActions}>
+						<FontAwesome name='trash' size={30} color='white'/>
+					</View>
+				</TouchableOpacity>
+		)
+	}
+	
+
+
 	return (
-		<TouchableHighlight
-			onPress={ () => props.toggleTask(props.id) }>
-			<View style={styles.container}>
+		<Swipeable
+			renderRightActions={showRightContent}
+		>
+			<TouchableWithoutFeedback
+				onPress={ () => props.toggleTask(props.id) }>
+				<View style={styles.container}>
 
 
-					<View style={styles.checkContainer}>
-						{getCheckView(props.doneAt)}
-					</View>
+						<View style={styles.checkContainer}>
+							{getCheckView(props.doneAt)}
+						</View>
 
-					<View>
-						<Text style={ [ styles.task, doneOrNotStyle ] }>{props.desc}</Text>
-						<Text style={ styles.date }>
-							{props.doneAt ? 'Feito em ': ''}
-							{formatedDate}
-						</Text>
-					</View>
-			</View>
-		</TouchableHighlight>
+						<View>
+							<Text style={ [ styles.task, doneOrNotStyle ] }>{props.desc}</Text>
+							<Text style={ styles.date }>
+								{props.doneAt ? 'Feito em ': ''}
+								{formatedDate}
+							</Text>
+						</View>
+				</View>
+			</TouchableWithoutFeedback>
+		</Swipeable>
+
 	)
 }
 
@@ -90,5 +108,15 @@ const styles = StyleSheet.create({
 		fontFamily: commonStyles.fontFamily,
 		color: commonStyles.colors.subText,
 		fontSize: 13
+	},
+	rightActions: {
+		flex: 1,
+		backgroundColor: 'red',
+		flexDirection: 'row',
+		alignItems:'center',
+		justifyContent:'flex-end',
+		paddingHorizontal: 20,
+		borderColor: '#AAA',
+		borderBottomWidth: 1
 	}
 })

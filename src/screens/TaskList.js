@@ -11,6 +11,7 @@ import {
 import Task from '../components/Task'
 import { FontAwesome } from '@expo/vector-icons';
 import AddTask from './AddTask'
+
 // Assets
 import todayImage from '../../assets/imgs/today.jpg'
 
