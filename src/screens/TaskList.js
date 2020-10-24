@@ -22,10 +22,6 @@ import commonStyles from '../commonStyles'
 
 export default class TaskList extends Component {
 
-	componentDidMount() {
-		commonStyles.loadFont()
-	}
-
 	state = {
 		tasks: [
 			{ id: Math.random(), desc: 'Comprar Café', doneAt: new Date(), estimatedAt: new Date() },
@@ -158,14 +154,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end'
 	},
 	title: {
-		fontFamily: commonStyles.fontFamily,
 		color: commonStyles.colors.secondary,
 		fontSize: 50,
 		marginLeft: 20,
 		marginBottom: 20
 	},
 	subtitle: {
-		fontFamily: commonStyles.fontFamily,
 		color: commonStyles.colors.secondary,
 		fontSize: 20,
 		marginLeft: 20,

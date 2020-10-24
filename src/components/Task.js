@@ -19,7 +19,7 @@ export default props => {
 
 	const showRightContent = () => {
 		return (
-				<TouchableOpacity>
+				<TouchableOpacity onPress={() => console.warn('Funcionou')}>
 					<View style={styles.rightActions}>
 						<FontAwesome name='trash' size={30} color='white'/>
 					</View>
@@ -100,18 +100,16 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	task: {
-		fontFamily: commonStyles.fontFamily,
 		color: commonStyles.colors.mainText,
 		fontSize: 16
 	},
 	date: {
-		fontFamily: commonStyles.fontFamily,
 		color: commonStyles.colors.subText,
 		fontSize: 13
 	},
 	rightActions: {
 		flex: 1,
-		backgroundColor: 'red',
+		backgroundColor: '#f15b4e',
 		flexDirection: 'row',
 		alignItems:'center',
 		justifyContent:'flex-end',

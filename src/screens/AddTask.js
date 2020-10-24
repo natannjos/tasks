@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white'
 	},
 	header: {
-		fontFamily: commonStyles.fontFamily,
 		backgroundColor: commonStyles.colors.today,
 		color: commonStyles.colors.secondary,
 		textAlign: "center",
@@ -140,7 +139,6 @@ const styles = StyleSheet.create({
 		color: commonStyles.colors.today
 	},
 	input:{
-		fontFamily: commonStyles.fontFamily,
 		height: 40,
 		margin: 15,
 		backgroundColor: '#fff',
@@ -154,7 +152,6 @@ const styles = StyleSheet.create({
 		borderColor: commonStyles.colors.today,
 		borderWidth: 1,
 		borderRadius: 20,
-		fontFamily: commonStyles.fontFamily,
 		fontSize: 20,
 		textAlign: "center",
 		paddingHorizontal: 10
