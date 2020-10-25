@@ -12,6 +12,8 @@ import Task from '../components/Task'
 import { FontAwesome } from '@expo/vector-icons';
 import AddTask from './AddTask'
 
+import { registerRootComponent } from 'expo'
+
 // Assets
 import todayImage from '../../assets/imgs/today.jpg'
 
@@ -20,6 +22,8 @@ import moment from 'moment'
 import 'moment/locale/pt-br'
 import commonStyles from '../commonStyles'
 
+
+
 export default class TaskList extends Component {
 
 	state = {
@@ -27,9 +31,12 @@ export default class TaskList extends Component {
 			{ id: Math.random(), desc: 'Comprar Café', doneAt: new Date(), estimatedAt: new Date() },
 			{ id: Math.random(), desc: 'Estudar Livro', doneAt: null, estimatedAt: new Date() },
 		],
+		editingTask: {},
 		showDoneTasks: true,
 		visibleTasks: [],
-		showAddTask: false
+		showAddTask: false,
+		showEditTask: false
+
 	}
 
 	toggleTask = (taskId) => {
@@ -76,6 +83,39 @@ export default class TaskList extends Component {
 	
 	}
 
+	deleteTask = taskId => {
+		const tasks = this.state.tasks.filter(task=> task.id !== taskId)
+		this.setState({ tasks }, this.filterTasks)
+	}
+
+	// Falta terminar
+	editTask = taskId => {
+		let filterTask = task => task.id == taskId
+		const tasks = [...this.state.tasks]
+
+		const editingTask = tasks.filter(filterTask)[0]
+		this.setState({ editingTask, showEditTask: true })
+
+	}
+
+	saveEditing = modifiedTask => {
+		if(!modifiedTask.desc || !modifiedTask.desc.trim()) {
+			Alert.alert('Dados Inválidos', 'Descrição não informada!')
+			return
+		}
+
+		let editingTask = this.state.editingTask
+		editingTask.desc = modifiedTask.desc
+		editingTask.estimatedAt = modifiedTask.date
+
+		let tasks = this.state.tasks.filter(task=> task.id !== editingTask.id)
+
+		tasks.push(editingTask)
+		
+		this.setState({ tasks, showEditTask: false }, this.filterTasks)
+
+	}
+
 	componentDidMount = () => {
 		this.filterTasks()
 	}
@@ -90,6 +130,12 @@ export default class TaskList extends Component {
 					isVisible={this.state.showAddTask} 
 					onCancel={ () => this.setState({showAddTask: false}) }
 					onSave={ this.addTask }
+				/>
+				<AddTask 
+					isVisible={this.state.showEditTask} 
+					onCancel={ () => this.setState({showEditTask: false}) }
+					onEdit={ this.saveEditing }
+					editingTask={ this.state.editingTask  }
 				/>
 
 				<ImageBackground 
@@ -118,7 +164,7 @@ export default class TaskList extends Component {
 						data={ this.state.visibleTasks } 
 						keyExtractor={item => `${item.id}`}
 						renderItem={ 
-							({item}) => <Task {...item} toggleTask={this.toggleTask}/> 
+							({item}) => <Task {...item} toggleTask={this.toggleTask} onDelete={this.deleteTask} onEdit={this.editTask}/> 
 						}
 					/>
 				</View>
@@ -135,7 +181,6 @@ export default class TaskList extends Component {
 		)
 	}
 }
-
 
 // Styles
 
@@ -183,3 +228,5 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	}
 })
+
+registerRootComponent(TaskList);

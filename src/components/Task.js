@@ -2,10 +2,12 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableWithoutFeedback, Animated, TouchableOpacity } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 
-import { Swipeable } from 'react-native-gesture-handler'
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import moment from 'moment'
 import 'moment/locale/pt-br'
+
+
 
 export default props => {
 
@@ -19,19 +21,29 @@ export default props => {
 
 	const showRightContent = () => {
 		return (
-				<TouchableOpacity onPress={() => console.warn('Funcionou')}>
+				<TouchableOpacity onPress={() => props.onDelete && props.onDelete(props.id)}>
 					<View style={styles.rightActions}>
 						<FontAwesome name='trash' size={30} color='white'/>
 					</View>
 				</TouchableOpacity>
 		)
 	}
+
+	const showLeftContent = () => {
+		return (
+				<View style={styles.leftActions}>
+					<FontAwesome name='pencil' size={20} color='white' style={styles.editIcon}/>
+					<Text style={styles.editText}>Editar</Text>
+				</View>
+		)
+	}
 	
-
-
 	return (
 		<Swipeable
 			renderRightActions={showRightContent}
+			renderLeftActions={showLeftContent}
+			overshootRight={false}
+			onSwipeableLeftWillOpen={() => props.onEdit && props.onEdit(props.id)}
 		>
 			<TouchableWithoutFeedback
 				onPress={ () => props.toggleTask(props.id) }>
@@ -73,7 +85,6 @@ function getCheckView(doneAt) {
 
 
 import commonStyles from '../commonStyles'
-commonStyles.loadFont()
 
 const styles = StyleSheet.create({
 	container: {
@@ -81,7 +92,8 @@ const styles = StyleSheet.create({
 		borderColor: '#AAA',
 		borderBottomWidth: 1,
 		alignItems: 'center',
-		paddingVertical: 10
+		paddingVertical: 10,
+		backgroundColor: 'white'
 	},
 	checkContainer: {
 		width: '20%',
@@ -109,12 +121,26 @@ const styles = StyleSheet.create({
 	},
 	rightActions: {
 		flex: 1,
-		backgroundColor: '#f15b4e',
+		backgroundColor: 'red',
 		flexDirection: 'row',
 		alignItems:'center',
 		justifyContent:'flex-end',
 		paddingHorizontal: 20,
 		borderColor: '#AAA',
 		borderBottomWidth: 1
+	},
+	leftActions: {
+		flex: 1,
+		backgroundColor: 'green',
+		flexDirection: 'row',
+		alignItems:'center',
+	},
+	editText: {
+		color: 'white',
+		fontSize: 20,
+		margin: 10
+	},
+	editIcon: {
+		marginLeft: 10
 	}
 })
