@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react'
 import { 
 	SafeAreaView, 
@@ -8,35 +9,46 @@ import {
 	FlatList,
 	TouchableOpacity,
 	Alert } from 'react-native'
-import Task from '../components/Task'
+
+
 import { FontAwesome } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-community/async-storage';
+
+// Registering component on expo
+import { registerRootComponent } from 'expo'
+
+// My components
+import Task from '../components/Task'
 import AddTask from './AddTask'
 
-import { registerRootComponent } from 'expo'
 
 // Assets
 import todayImage from '../../assets/imgs/today.jpg'
-
-// Libs
-import moment from 'moment'
-import 'moment/locale/pt-br'
 import commonStyles from '../commonStyles'
 
+// External Libs
+import moment from 'moment'
+import 'moment/locale/pt-br'
+import emoji from 'emoji-dictionary'
 
-
-export default class TaskList extends Component {
-
-	state = {
-		tasks: [
-			{ id: Math.random(), desc: 'Comprar Café', doneAt: new Date(), estimatedAt: new Date() },
-			{ id: Math.random(), desc: 'Estudar Livro', doneAt: null, estimatedAt: new Date() },
-		],
+const initialState = {
+		tasks: [],
 		editingTask: {},
 		showDoneTasks: true,
 		visibleTasks: [],
 		showAddTask: false,
 		showEditTask: false
+}
 
+export default class TaskList extends Component {
+
+	state = { ...initialState }
+
+	componentDidMount = async () => {
+		this.filterTasks()
+		const stateString = await AsyncStorage.getItem('tasksState')
+		const state = JSON.parse(stateString) || initialState
+		this.setState(state, this.filterTasks)
 	}
 
 	toggleTask = (taskId) => {
@@ -64,6 +76,7 @@ export default class TaskList extends Component {
 			visibleTasks = this.state.tasks.filter(task => task.doneAt === null )
 
 		this.setState({ visibleTasks })
+		AsyncStorage.setItem('tasksState', JSON.stringify(this.state))
 	}
 	
 	addTask = newTask => {
@@ -88,7 +101,6 @@ export default class TaskList extends Component {
 		this.setState({ tasks }, this.filterTasks)
 	}
 
-	// Falta terminar
 	editTask = taskId => {
 		let filterTask = task => task.id == taskId
 		const tasks = [...this.state.tasks]
@@ -114,10 +126,6 @@ export default class TaskList extends Component {
 		
 		this.setState({ tasks, showEditTask: false }, this.filterTasks)
 
-	}
-
-	componentDidMount = () => {
-		this.filterTasks()
 	}
 
 	render(){
@@ -160,13 +168,21 @@ export default class TaskList extends Component {
 				</ImageBackground>
 
 				<View style={styles.taskList}>
-					<FlatList 
-						data={ this.state.visibleTasks } 
-						keyExtractor={item => `${item.id}`}
-						renderItem={ 
-							({item}) => <Task {...item} toggleTask={this.toggleTask} onDelete={this.deleteTask} onEdit={this.editTask}/> 
-						}
-					/>
+					{
+						this.state.tasks == false
+						? <View style={styles.noTasksView}>
+								<Text style={styles.noTasksText}>
+									Nada previsto para hoje {emoji.getUnicode('grinning')}
+								</Text>
+							</View>
+						:	<FlatList 
+								data={ this.state.visibleTasks } 
+								keyExtractor={item => `${item.id}`}
+								renderItem={ 
+									({item}) => <Task {...item} toggleTask={this.toggleTask} onDelete={this.deleteTask} onEdit={this.editTask}/> 
+								}
+							/>
+					}
 				</View>
 
 				<TouchableOpacity style={styles.addButton} 
@@ -226,6 +242,14 @@ const styles = StyleSheet.create({
 		backgroundColor: commonStyles.colors.today,
 		alignItems: 'center',
 		justifyContent: 'center'
+	},
+	noTasksView: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	noTasksText: {
+		fontSize: 20
 	}
 })
 

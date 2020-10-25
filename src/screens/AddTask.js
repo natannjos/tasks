@@ -88,7 +88,14 @@ export default class AddTask extends Component {
 				</TouchableWithoutFeedback>
 
 				<View style={styles.container}>
-					<Text style={styles.header}>Nova Tarefa</Text>
+					<Text style={styles.header}>
+						{
+							this.props.onEdit 
+								? 'Editando Tarefa' 
+								: 'Nova Tarefa'
+						}
+						
+					</Text>
 					
 					<TextInput style={styles.input}
 						placeholder='Informe sua tarefa...'

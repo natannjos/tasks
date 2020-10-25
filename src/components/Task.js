@@ -21,29 +21,28 @@ export default props => {
 
 	const showRightContent = () => {
 		return (
+			<View style={styles.rightActions}>
+
 				<TouchableOpacity onPress={() => props.onDelete && props.onDelete(props.id)}>
-					<View style={styles.rightActions}>
-						<FontAwesome name='trash' size={30} color='white'/>
+					<View style={styles.deleteButton}>
+						<FontAwesome name='trash' size={30} color='white' style={styles.icon}/>
 					</View>
 				</TouchableOpacity>
+
+				<TouchableOpacity onPress={() => props.onEdit && props.onEdit(props.id)}>
+					<View style={styles.editButton}>
+						<FontAwesome name='pencil' size={30} color='white' style={styles.icon}/>
+					</View>	
+				</TouchableOpacity>	
+			</View>
+
 		)
 	}
 
-	const showLeftContent = () => {
-		return (
-				<View style={styles.leftActions}>
-					<FontAwesome name='pencil' size={20} color='white' style={styles.editIcon}/>
-					<Text style={styles.editText}>Editar</Text>
-				</View>
-		)
-	}
-	
 	return (
 		<Swipeable
 			renderRightActions={showRightContent}
-			renderLeftActions={showLeftContent}
 			overshootRight={false}
-			onSwipeableLeftWillOpen={() => props.onEdit && props.onEdit(props.id)}
 		>
 			<TouchableWithoutFeedback
 				onPress={ () => props.toggleTask(props.id) }>
@@ -120,27 +119,30 @@ const styles = StyleSheet.create({
 		fontSize: 13
 	},
 	rightActions: {
-		flex: 1,
-		backgroundColor: 'red',
 		flexDirection: 'row',
-		alignItems:'center',
-		justifyContent:'flex-end',
-		paddingHorizontal: 20,
 		borderColor: '#AAA',
 		borderBottomWidth: 1
 	},
-	leftActions: {
+	editButton: {
 		flex: 1,
 		backgroundColor: 'green',
-		flexDirection: 'row',
 		alignItems:'center',
+		justifyContent: 'center',
+		paddingHorizontal: 10
+	},
+	deleteButton: {
+		flex: 1,
+		backgroundColor: 'red',
+		alignItems:'center',
+		justifyContent: 'center',
+		paddingHorizontal: 10
 	},
 	editText: {
 		color: 'white',
 		fontSize: 20,
 		margin: 10
 	},
-	editIcon: {
-		marginLeft: 10
+	icon: {
+		marginHorizontal: 5
 	}
 })
