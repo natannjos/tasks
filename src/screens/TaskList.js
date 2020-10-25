@@ -12,7 +12,7 @@ import {
 
 
 import { FontAwesome } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-community/async-storage';
+import * as SecureStore from 'expo-secure-store'
 
 // Registering component on expo
 import { registerRootComponent } from 'expo'
@@ -46,7 +46,7 @@ export default class TaskList extends Component {
 
 	componentDidMount = async () => {
 		this.filterTasks()
-		const stateString = await AsyncStorage.getItem('tasksState')
+		const stateString = await SecureStore.getItemAsync('tasksState')
 		const state = JSON.parse(stateString) || initialState
 		this.setState(state, this.filterTasks)
 	}
@@ -76,7 +76,7 @@ export default class TaskList extends Component {
 			visibleTasks = this.state.tasks.filter(task => task.doneAt === null )
 
 		this.setState({ visibleTasks })
-		AsyncStorage.setItem('tasksState', JSON.stringify(this.state))
+		SecureStore.setItemAsync('tasksState', JSON.stringify(this.state))
 	}
 	
 	addTask = newTask => {
