@@ -1,5 +1,5 @@
 {
-  "main": "./src/screens/TaskList.js",
+  "main": "./src/screens/Auth.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",

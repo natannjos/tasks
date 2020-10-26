@@ -20,7 +20,7 @@
       "supportsTablet": true
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/task-icon.png"
     },
     "android": {
       "package": "com.natannjos.tasks"

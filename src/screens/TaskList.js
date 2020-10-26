@@ -15,7 +15,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store'
 
 // Registering component on expo
-import { registerRootComponent } from 'expo'
+//import { registerRootComponent } from 'expo'
 
 // My components
 import Task from '../components/Task'
@@ -253,4 +253,4 @@ const styles = StyleSheet.create({
 	}
 })
 
-registerRootComponent(TaskList);
+//registerRootComponent(TaskList);
