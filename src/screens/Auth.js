@@ -7,7 +7,7 @@ import {
 	TextInput,
 	TouchableOpacity,
 	Platform,
-	SafeAreaView } from 'react-native'
+	Alert } from 'react-native'
 
 // Assets
 import backgroundImage from '../../assets/imgs/login.jpg'
@@ -22,7 +22,14 @@ export default class Auth extends Component{
 		email: '',
 		password: '',
 		confirmPassword: '',
-		stageNew: true
+		stageNew: false
+	}
+
+	signinOrSignup = () => {
+		if(this.state.stageNew)
+			Alert.alert('Sucesso', 'Criar conta')
+		else
+			Alert.alert('Sucesso', 'Logar')
 	}
 
 	render() {
@@ -32,9 +39,11 @@ export default class Auth extends Component{
 					source={backgroundImage}
 					style={styles.background}
 				>
+
 					<Text style={styles.title}>
 						Tasks
 					</Text>
+
 					<View style={styles.formContainer}>
 						<Text style={styles.subtitle}>
 							{
@@ -43,6 +52,7 @@ export default class Auth extends Component{
 								: 'Informe seus dados'
 							}
 						</Text>
+
 						{this.state.stageNew &&
 							<TextInput placeholder='Nome' 
 								value={this.state.name} 
@@ -50,12 +60,13 @@ export default class Auth extends Component{
 								onChangeText={ name => this.setState({ name }) }
 							/>
 						}
+
 						<TextInput placeholder='Email' 
 							value={this.state.email} 
 							style={styles.input}
 							onChangeText={ email => this.setState({ email }) }
 						/>
-						
+
 						<TextInput placeholder='Senha' 
 							value={this.state.password} 
 							style={styles.input}
@@ -72,7 +83,7 @@ export default class Auth extends Component{
 						/>
 						}
 
-						<TouchableOpacity>
+						<TouchableOpacity onPress={this.signinOrSignup}>
 							<View style={styles.button}>
 								<Text style={styles.buttonText}>
 									{
@@ -84,7 +95,25 @@ export default class Auth extends Component{
 							</View>
 						</TouchableOpacity>
 
-
+					</View>
+					<View  style={{
+						borderTopColor: 'white',
+						borderTopWidth: 2,
+						marginTop: 15
+						}}
+					>
+						<TouchableOpacity style={{padding: 10}}
+						onPress={
+							() => this.setState({ stageNew: !this.state.stageNew })
+						}> 
+							<Text style={styles.buttonText} >
+								{
+									this.state.stageNew 
+										? 'Já possui conta?'
+										: 'Ainda não possui conta?'
+								}
+							</Text>
+						</TouchableOpacity>
 					</View>
 				</ImageBackground>
 		)
