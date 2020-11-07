@@ -4,16 +4,14 @@ import {
 	Text, 
 	StyleSheet,
 	View,
-	TextInput,
 	TouchableOpacity,
-	Platform,
 	Alert } from 'react-native'
 
 // Assets
 import backgroundImage from '../../assets/imgs/login.jpg'
 import commonStyles from '../commonStyles'
-import { registerRootComponent } from 'expo'
 
+import AuthInput from '../components/AuthInput'
 
 export default class Auth extends Component{
 
@@ -41,7 +39,7 @@ export default class Auth extends Component{
 				>
 
 					<Text style={styles.title}>
-						Tasks
+						Tarefas
 					</Text>
 
 					<View style={styles.formContainer}>
@@ -54,20 +52,24 @@ export default class Auth extends Component{
 						</Text>
 
 						{this.state.stageNew &&
-							<TextInput placeholder='Nome' 
+							<AuthInput placeholder='Nome'
+								icon='user'
 								value={this.state.name} 
 								style={styles.input}
 								onChangeText={ name => this.setState({ name }) }
 							/>
 						}
 
-						<TextInput placeholder='Email' 
+						<AuthInput 
+							placeholder='Email' 
 							value={this.state.email} 
 							style={styles.input}
+							icon='at'
 							onChangeText={ email => this.setState({ email }) }
 						/>
 
-						<TextInput placeholder='Senha' 
+						<AuthInput placeholder='Senha'
+							icon='lock'
 							value={this.state.password} 
 							style={styles.input}
 							secureTextEntry={true}
@@ -75,7 +77,8 @@ export default class Auth extends Component{
 						/>
 
 						{ this.state.stageNew && 
-							<TextInput placeholder='Confirme a senha' 
+							<AuthInput placeholder='Confirme a senha'
+							icon='lock'
 							value={this.state.confirmPassword} 
 							style={styles.input}
 							secureTextEntry={true}
@@ -143,12 +146,12 @@ const styles = StyleSheet.create({
 	input: {
 		marginTop: 10,
 		backgroundColor: 'white',
-		padding: Platform.OS == 'ios' ? 15 : 10
+		borderRadius: 30,
 	},
 	formContainer: {
 		backgroundColor: 'rgba(0, 0, 0, 0.8)',
 		padding: 20,
-		width: '90%'
+		width: '85%'
 	},
 	button: {
 		backgroundColor: '#080',
@@ -162,4 +165,3 @@ const styles = StyleSheet.create({
 	}
 })
 
-registerRootComponent(Auth)

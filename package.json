@@ -1,5 +1,5 @@
 {
-  "main": "./src/screens/Auth.js",
+  "main": "./src/Navigator.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
