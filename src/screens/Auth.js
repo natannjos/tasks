@@ -13,6 +13,9 @@ import commonStyles from '../commonStyles'
 
 import AuthInput from '../components/AuthInput'
 
+import { server, showError, showSuccess } from '../common'
+import axios from 'axios'
+
 export default class Auth extends Component{
 
 	state = {
@@ -25,9 +28,25 @@ export default class Auth extends Component{
 
 	signinOrSignup = () => {
 		if(this.state.stageNew)
-			Alert.alert('Sucesso', 'Criar conta')
+			this.signup()
 		else
 			Alert.alert('Sucesso', 'Logar')
+	}
+
+	signup = async () => {
+		try {
+			await axios.post(`${server}/signup`, {
+				name: this.state.name,
+				email: this.state.email,
+				password: this.state.password,
+				confirmPassword: this.state.confirmPassword
+			})
+
+			showSuccess('usuário cadastrado!')
+			this.setState({ stageNew: false })
+		} catch (error) {
+			showError(error)
+		}
 	}
 
 	render() {
@@ -157,7 +176,8 @@ const styles = StyleSheet.create({
 		backgroundColor: '#080',
 		marginTop: 10,
 		padding: 10,
-		alignItems: 'center'
+		alignItems: 'center',
+		borderRadius: 10
 	},
 	buttonText: {
 		color: 'white',
