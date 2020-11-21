@@ -144,19 +144,19 @@ export default class TaskList extends Component {
 			return
 		}
 
-		try {
 			let editingTask = this.state.editingTask
+
 			await axios.put(`${server}/tasks/${editingTask.id}/update`, {
 				desc: modifiedTask.desc,
-				estimatedAt: modifiedTask.date
+				estimateAt: modifiedTask.date
+			}).then(res => {
+				console.log(res.data)
+				this.setState({ showEditTask: false }, this.loadTasks)
+				Platform.OS == 'android' ? this.showToast('Tarefa alterada com sucesso') : ''
+			}).catch(err => {
+				console.log(err)
+				showError(err)
 			})
-	
-			this.setState({ showEditTask: false }, this.loadTasks)
-			Platform.OS == 'android' ? this.showToast('Tarefa alterada com sucesso') : ''
-			
-		} catch (error) {
-			showError(error)
-		}
 
 	}
 
@@ -179,6 +179,7 @@ export default class TaskList extends Component {
 				onCancel={ () => this.setState({showAddTask: false}) }
 				onSave={ this.addTask }
 			/>
+
 			<AddTask 
 				isVisible={this.state.showEditTask} 
 				onCancel={ () => this.setState({showEditTask: false}) }

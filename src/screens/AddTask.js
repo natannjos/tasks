@@ -25,15 +25,15 @@ export default class AddTask extends Component {
 			this.props.editingTask 
 			? this.setState({ 
 					desc: this.props.editingTask.desc, 
-					date: this.props.editingTask.estimatedAt
+					date: this.props.editingTask.estimateAt
 				}) 
 			: null
 	}
 
 	getDatePicker = () => {
 		let datePicker = <DateTimePicker 
-			value={this.state.date}
-			onChange={(_, date) => this.setState({ date, showDatePicker: false })}
+			value={moment(this.state.date).toDate()}
+			onChange={(_, date) => this.setState({ date: date, showDatePicker: false })}
 			mode='date'
 		/>
 
@@ -58,7 +58,7 @@ export default class AddTask extends Component {
 	save = () => {
 		const newTask = {
 			desc: this.state.desc,
-			date: this.state.date
+			date: moment(this.state.date)
 		}
 
 		if(this.props.onSave){

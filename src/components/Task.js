@@ -61,7 +61,7 @@ export default props => {
 
 
 						<View style={styles.checkContainer}>
-							{getCheckView(props.doneAt)}
+							{ getCheckView(props.doneAt) }
 						</View>
 
 						<View>
