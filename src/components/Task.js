@@ -15,7 +15,7 @@ export default props => {
 	? { textDecorationLine: 'line-through'} : {}
 
 
-	const date = props.doneAt ? props.doneAt: props.estimatedAt
+	const date = props.doneAt !== null ? props.doneAt: props.estimateAt
 
 	const formatedDate = moment(date).locale('pt-br').format('ddd, D [de] MMMM')
 

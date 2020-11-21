@@ -13,8 +13,10 @@ import commonStyles from '../commonStyles'
 
 import AuthInput from '../components/AuthInput'
 
-import { server, showError, showSuccess } from '../common'
 import axios from 'axios'
+import * as SecureStore from 'expo-secure-store'
+
+import { server, showError, showSuccess } from '../common'
 
 export default class Auth extends Component{
 
@@ -34,37 +36,51 @@ export default class Auth extends Component{
 	}
 
 	signup = async () => {
-		try {
 			await axios.post(`${server}/signup`, {
 				name: this.state.name.trim(),
 				email: this.state.email.trim().toLowerCase(),
 				password: this.state.password,
 				confirmPassword: this.state.confirmPassword
 			})
+			.then(res => {
+				showSuccess('usuário cadastrado!')
+				this.setState({ stageNew: false })
+			})
+			.catch(err => {
+				showError(err.response.data)
+			})
 
-			showSuccess('usuário cadastrado!')
-			this.setState({ stageNew: false })
-		} catch (error) {
-			showError(error)
-		}
 	}
 
 	signin = async () => {
-		try {
-			const res = await axios.post(`${server}/signin`, {
+			await axios.post(`${server}/signin`, {
 				email: this.state.email.trim().toLowerCase(),
 				password: this.state.password
+			}).then(res => {
+				SecureStore.setItemAsync('userData', JSON.stringify(res.data))
+				axios.defaults.headers.common['Authorization'] = `bearer ${res.data.token}`
+	
+				this.props.navigation.navigate('Home', res.data)
+
+			}).catch(err => {
+				showError(err.response.data)
 			})
 
-			axios.defaults.headers.common['Authorization'] = `bearer ${res.data.token}`
 
-			this.props.navigation.navigate('Home')
-		} catch (error) {
-			showError(error)
-		}
+		
 	}
 
 	render() {
+		const validations = []
+		validations.push(this.state.email && this.state.email.includes('@'))
+		validations.push(this.state.password && this.state.password.length >= 3)
+		
+		if(this.state.stageNew) {
+			validations.push(this.state.name && this.state.name.trim().length >= 3)
+			validations.push(this.state.password === this.state.confirmPassword)
+		}
+
+		const validForm = validations.reduce((res, atual) => res && atual)
 
 		return (
 				<ImageBackground 
@@ -88,7 +104,7 @@ export default class Auth extends Component{
 						{this.state.stageNew &&
 							<AuthInput placeholder='Nome'
 								icon='user'
-								value={this.state.name} 
+								value={this.state.name.trim()} 
 								style={styles.input}
 								onChangeText={ name => this.setState({ name }) }
 							/>
@@ -96,7 +112,7 @@ export default class Auth extends Component{
 
 						<AuthInput 
 							placeholder='Email' 
-							value={this.state.email} 
+							value={this.state.email.trim().toLowerCase()} 
 							style={styles.input}
 							icon='at'
 							onChangeText={ email => this.setState({ email }) }
@@ -120,8 +136,10 @@ export default class Auth extends Component{
 						/>
 						}
 
-						<TouchableOpacity onPress={this.signinOrSignup}>
-							<View style={styles.button}>
+						<TouchableOpacity onPress={this.signinOrSignup} 
+						disabled={!validForm}
+						>
+							<View style={[styles.button, validForm ? {} : { backgroundColor: "#aaa"}]}>
 								<Text style={styles.buttonText}>
 									{
 										this.state.stageNew 

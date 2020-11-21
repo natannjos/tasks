@@ -4,7 +4,7 @@ import { Alert } from 'react-native'
 const server = 'http://192.168.100.5:3000'
 
 const showError = (err) => {
-	Alert.alert('Ops! Ocorreu um erro!', `Mensagem: ${err}`)
+	Alert.alert('Ops! Ocorreu um erro!', `${err}`)
 }
 
 const showSuccess = (msg) => {
