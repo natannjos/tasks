@@ -38,10 +38,21 @@ export default props => {
 
 		)
 	}
+	const showOnlyTrash = () => {
+		return (
+			<View style={styles.rightActions}>
+				<TouchableOpacity onPress={() => props.onDelete && props.onDelete(props.id)}>
+					<View style={styles.deleteButton}>
+						<FontAwesome name='trash' size={30} color='white' style={styles.icon}/>
+					</View>
+				</TouchableOpacity>
+			</View>
+		)
+	}
 
 	return (
 		<Swipeable
-			renderRightActions={showRightContent}
+			renderRightActions={props.doneAt ? showOnlyTrash : showRightContent}
 			overshootRight={false}
 		>
 			<TouchableWithoutFeedback

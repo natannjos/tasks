@@ -36,8 +36,8 @@ export default class Auth extends Component{
 	signup = async () => {
 		try {
 			await axios.post(`${server}/signup`, {
-				name: this.state.name,
-				email: this.state.email,
+				name: this.state.name.trim(),
+				email: this.state.email.trim().toLowerCase(),
 				password: this.state.password,
 				confirmPassword: this.state.confirmPassword
 			})
@@ -52,7 +52,7 @@ export default class Auth extends Component{
 	signin = async () => {
 		try {
 			const res = await axios.post(`${server}/signin`, {
-				email: this.state.email,
+				email: this.state.email.trim().toLowerCase(),
 				password: this.state.password
 			})
 
@@ -199,4 +199,3 @@ const styles = StyleSheet.create({
 		fontSize: 20
 	}
 })
-
