@@ -174,18 +174,18 @@ export default class TaskList extends Component {
 
 		return (
 			<SafeAreaView style={styles.container}>
-			<AddTask 
-				isVisible={this.state.showAddTask} 
-				onCancel={ () => this.setState({showAddTask: false}) }
-				onSave={ this.addTask }
-			/>
+				<AddTask 
+					isVisible={this.state.showAddTask} 
+					onCancel={ () => this.setState({showAddTask: false}) }
+					onSave={ this.addTask }
+				/>
 
-			<AddTask 
-				isVisible={this.state.showEditTask} 
-				onCancel={ () => this.setState({showEditTask: false}) }
-				onEdit={ this.saveEditing }
-				editingTask={ this.state.editingTask }
-			/>
+				<AddTask 
+					isVisible={this.state.showEditTask} 
+					onCancel={ () => this.setState({showEditTask: false}) }
+					onEdit={ this.saveEditing }
+					editingTask={ this.state.editingTask }
+				/>
 
 				<ImageBackground 
 					source={this.props.image}
@@ -211,7 +211,7 @@ export default class TaskList extends Component {
 					</View>
 				</ImageBackground>
 
-				<View style={styles.taskList}>
+				<View style={styles.taskList} >
 					{
 						this.state.tasks == false
 						? <View style={styles.noTasksView}>
@@ -220,6 +220,7 @@ export default class TaskList extends Component {
 								</Text>
 							</View>
 						:	<FlatList 
+								onEndReachedThreshold={0.1}
 								data={ this.state.visibleTasks } 
 								keyExtractor={item => `${item.id}`}
 								renderItem={ 
@@ -248,11 +249,11 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	},
+	taskList: {
+		flex: 7
+	},
 	background: {
 		flexGrow: 3
-	},
-	taskList: {
-		flexGrow: 7
 	},
 	titleBar: {
 		flex: 1,

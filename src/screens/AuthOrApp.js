@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, ActivityIndicator, StyleSheet } from 'react-native'
+import { SafeAreaView, ActivityIndicator, StyleSheet } from 'react-native'
 
 import axios from 'axios'
 import * as SecureStore from 'expo-secure-store'
@@ -28,9 +28,9 @@ export default class AuthOrApp extends Component {
 	render() {
 
 		return (
-				<View style={styles.container}>
+				<SafeAreaView style={styles.container}>
 					<ActivityIndicator size='large'  />
-				</View>
+				</SafeAreaView>
 		)
 	}
 }
